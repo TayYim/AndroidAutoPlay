@@ -56,15 +56,14 @@ def performAction(view):
 
 def handleScrollable(view):
     while(1):
-        viewsCurrentPage = set(vc.dump())
+        lastCurrent = vc.dump()[-1].map
         view.uiScrollable.flingForward()
-        viewsNew = set(vc.dump())
+        viewsNew = vc.dump()
         viewsSaved = dict.get(activityStack[-1])
-        # print "\ncurrent:"
-        # print viewsCurrentPage
-        # print "\nnew:"
-        # print viewsNew
-        if viewsCurrentPage == viewsNew :
+        lastNew = viewsNew[-1].map
+
+        # use the map of the view as identifier
+        if lastCurrent == lastNew :
             print "over"
             break
         else :
