@@ -50,25 +50,23 @@ def performAction(view):
     if view.isScrollable() :
         handleScrollable(view)
 
-    # view.touch()
+    view.touch()
 
     vc.sleep(_s)
 
 def handleScrollable(view):
     while(1):
-        lastCurrent = vc.dump()[-1].map
+        oldViews = vc.dump()
         view.uiScrollable.flingForward()
-        viewsNew = vc.dump()
+        newViews = vc.dump()
         viewsSaved = dict.get(activityStack[-1])
-        lastNew = viewsNew[-1].map
 
         # use the map of the view as identifier
-        if lastCurrent == lastNew :
-            print "over"
+        if isSamePage(oldViews,newViews) :
+            print "scroll over"
             break
         else :
-            viewsSaved = viewsSaved.union(viewsNew)
-    print viewsSaved
+            viewsSaved = viewsSaved.union(newViews)
 
 # for everything clickable
 def handleClickable(view):
@@ -88,6 +86,16 @@ def deepcopy(oldSet):
     for item in oldSet:
         newSet.add(item)
     return newSet
+
+# judge if is the same page
+def isSamePage(oldViews,newViews):
+    if len(oldViews) != len(newViews):
+        return False
+    else:
+        for view in zip(oldViews,newViews):
+            if (view[0].map != view[1].map) :
+                return False
+        return True
 
 
 views = set(vc.dump(window=-1)) # as a set
