@@ -60,6 +60,10 @@ def performAction(view):
     print view.getCenter()
     print '\n'
 
+    # hide keyboard
+    if vc.device.isKeyboardShown():
+        vc.device.press('KEYCODE_BACK')
+
     if view.isScrollable():
         scrollId = view.getId()
         while(1):
@@ -93,7 +97,7 @@ def performAction(view):
         print 'long touch'
         view.longTouch(2000)
 
-    vc.sleep(1)
+    vc.sleep(0.1)
 
 # judge if is the same page
 def isSamePage(oldViews,newViews):
