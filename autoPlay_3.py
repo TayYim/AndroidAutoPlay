@@ -33,9 +33,6 @@ def dfs(rootView):
         performAction(rootView) 
         currentViewList.remove(rootView)
 
-
-
-
     # start new activity
     newActivity = vc.device.getFocusedWindowName()
     if (currentActivity != newActivity):
@@ -57,6 +54,7 @@ def performAction(view):
 
     viewClass = view.getClass().split('.')[-1]
 
+    # dbg
     print view.getClass()
     print view.getText()
     print view.getCenter()
@@ -84,8 +82,16 @@ def performAction(view):
                 # add the new scroll view to the list for calling dfs()
                 currentViewList.append(newScrollView) 
                 
-    else:
+    elif viewClass == 'EditText':
+        view.setText('23333')
+
+    elif view.isClickable() or view.isCheckable() or viewClass == 'TextView':
+        print 'touch'
         view.touch()
+
+    elif view.map.get('long-clickable') == u'true':
+        print 'long touch'
+        view.longTouch(2000)
 
     vc.sleep(1)
 
