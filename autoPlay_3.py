@@ -28,9 +28,13 @@ def autoplay():
 def dfs(rootView):
     currentActivity = stack[-1]
     currentViewList = dict.get(currentActivity)
-    currentViewList.remove(rootView)
 
-    performAction(rootView)
+    if rootView in currentViewList:
+        performAction(rootView) 
+        currentViewList.remove(rootView)
+
+
+
 
     # start new activity
     newActivity = vc.device.getFocusedWindowName()
@@ -48,18 +52,52 @@ def dfs(rootView):
 
 
 def performAction(view):
+    currentActivity = stack[-1]
+    currentViewList = dict.get(currentActivity)
 
     viewClass = view.getClass().split('.')[-1]
 
-    print viewClass
+    print view.getClass()
     print view.getText()
     print view.getCenter()
     print '\n'
 
-    view.touch()
+    if view.isScrollable():
+        scrollId = view.getId()
+        while(1):
+            currentScrollView = vc.findViewById(scrollId)
+            # delete itself from the list to avoid endless loop
+            currentViewList.remove(currentScrollView)
+            dfs(currentScrollView)
+            oldViews = vc.dump()
+            currentScrollView.uiScrollable.flingForward()
+            newViews = vc.dump()
+
+            if isSamePage(oldViews,newViews) :
+                print "scroll over"
+                # for "remove" command in dfs(), add the original view object to the view list
+                currentViewList.append(view)
+                break
+            else :
+                newScrollView = vc.findViewById(scrollId)
+                currentViewList.extend(newScrollView.getChildren())
+                # add the new scroll view to the list for calling dfs()
+                currentViewList.append(newScrollView) 
+                
+    else:
+        view.touch()
 
     vc.sleep(1)
 
+# judge if is the same page
+def isSamePage(oldViews,newViews):
+    if len(oldViews) != len(newViews):
+        return False
+    else:
+        for view in zip(oldViews,newViews):
+            if (view[0].map != view[1].map) :
+                return False
+        return True
 
 if __name__ == '__main__':
     vc = init()
