@@ -7,7 +7,7 @@ def init():
     device, serialno = ViewClient.connectToDeviceOrExit(**kwargs1)
     # device is a adbclient
     kwargs2 = {'forceviewserveruse': False, 'useuiautomatorhelper': False, 'ignoreuiautomatorkilled': True,
-               'autodump': False, 'debug': {}, 'startviewserver': True, 'compresseddump': True}
+               'autodump': False, 'debug': {}, 'startviewserver': True, 'compresseddump': False}
     vc = ViewClient(device, serialno, **kwargs2)
     return vc
 
