@@ -1,0 +1,2 @@
+# AndroidAutoPlay
+GUI traverse
