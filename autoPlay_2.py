@@ -47,7 +47,7 @@ def performAction(view):
     print view.getText().encode("utf-8") + '\n'
 
     ## handle scrollable
-    if view.isScrollable :
+    if view.isScrollable() :
         handleScrollable(view)
 
     # view.touch()
