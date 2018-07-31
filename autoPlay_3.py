@@ -29,6 +29,8 @@ def dfs(rootView):
     currentActivity = stack[-1]
     currentViewList = dict.get(currentActivity)
 
+    print 'currentActivity: ' + currentActivity + '\n'
+
     if rootView in currentViewList:
         performAction(rootView) 
         currentViewList.remove(rootView)
