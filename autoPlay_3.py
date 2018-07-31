@@ -64,6 +64,10 @@ def performAction(view):
     if vc.device.isKeyboardShown():
         vc.device.press('KEYCODE_BACK')
 
+    # ignore webview
+    if viewClass == 'WebView':
+        return
+
     if view.isScrollable():
         scrollId = view.getId()
         if  isVerticalScroll(view):
