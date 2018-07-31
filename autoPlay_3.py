@@ -66,10 +66,16 @@ def performAction(view):
 
     if view.isScrollable():
         scrollId = view.getId()
+        if  isVerticalScroll(view):
+            view.uiScrollable.setAsVerticalList()
+        else:
+            view.uiScrollable.setAsHorizontalList()
         while(1):
             currentScrollView = vc.findViewById(scrollId)
             # delete itself from the list to avoid endless loop
-            currentViewList.remove(currentScrollView)
+            if currentScrollView in currentViewList: # to handle ValueError
+                currentViewList.remove(currentScrollView)
+
             dfs(currentScrollView)
             oldViews = vc.dump()
             currentScrollView.uiScrollable.flingForward()
@@ -110,12 +116,12 @@ def isSamePage(oldViews,newViews):
         return True
 
 # judge the type of scrollable component
-def isVerticleScroll(view):
+def isVerticalScroll(view):
     oldViews = vc.dump()
-    vc.sleep(2)
+    vc.sleep(1)
     view.uiScrollable.flingForward()
     newViews = vc.dump()
-    vc.sleep(2)
+    vc.sleep(1)
     view.uiScrollable.flingBackward()
     if isSamePage(oldViews,newViews):
         return False
