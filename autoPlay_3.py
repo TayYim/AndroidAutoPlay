@@ -29,6 +29,8 @@ def dfs(rootView):
     currentActivity = stack[-1]
     currentViewList = dict.get(currentActivity)
 
+    print 'currentActivity: ' + currentActivity + '\n'
+
     if rootView in currentViewList:
         performAction(rootView) 
         currentViewList.remove(rootView)
@@ -70,6 +72,10 @@ def performAction(view):
 
     if view.isScrollable():
         scrollId = view.getId()
+        # if id not defined, skip this component(may be parent component)
+        if not scrollId:
+            return
+
         if  isVerticalScroll(view):
             view.uiScrollable.setAsVerticalList()
         else:
