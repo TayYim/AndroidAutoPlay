@@ -109,6 +109,19 @@ def isSamePage(oldViews,newViews):
                 return False
         return True
 
+# judge the type of scrollable component
+def isVerticleScroll(view):
+    oldViews = vc.dump()
+    vc.sleep(2)
+    view.uiScrollable.flingForward()
+    newViews = vc.dump()
+    vc.sleep(2)
+    view.uiScrollable.flingBackward()
+    if isSamePage(oldViews,newViews):
+        return False
+    else:
+        return True
+
 if __name__ == '__main__':
     vc = init()
 
