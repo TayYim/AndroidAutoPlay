@@ -66,6 +66,10 @@ def performAction(view):
 
     if view.isScrollable():
         scrollId = view.getId()
+        # if id not defined, skip this component(may be parent component)
+        if not scrollId:
+            return
+
         if  isVerticalScroll(view):
             view.uiScrollable.setAsVerticalList()
         else:
